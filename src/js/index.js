@@ -41,11 +41,25 @@ const onBuy = () => {
   render();
 }
 
+const deleteAll = () => {
+  while ($wallet.hasChildNodes()) {
+    $wallet.removeChild($wallet.firstChild);
+  }
+}
+
 const render = () => {
+  deleteAll();
+  let $lotto;
   for (let i = 0; i < state.lottos.length; i++) {
-    let $lotto = document.createElement('span');
-    $lotto.classList.add('mx-1', 'text-4xl');
-    $lotto.innerText = '🎟️ ';
+    if (!$lottoNumbersToggleButton.checked) {
+      $lotto = document.createElement('span')
+      $lotto.classList.add('mx-1', 'text-4xl');
+      $lotto.innerText = '🎟️ ';
+    } else {
+      $lotto = document.createElement('p')
+      $lotto.style = 'width: 50%';
+      $lotto.innerText = '🎟️ ' + state.lottos[i];
+    }
     $wallet.appendChild($lotto);
   }
   $walletLabel.innerText = `총 ${state.lottos.length}개를 구매하였습니다.`;
@@ -54,3 +68,4 @@ const render = () => {
 $showResultButton.addEventListener('click', onModalShow);
 $modalClose.addEventListener('click', onModalClose);
 $buyButton.addEventListener('click', onBuy);
+$lottoNumbersToggleButton.addEventListener('change', render);
